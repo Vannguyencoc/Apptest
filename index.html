@@ -8,128 +8,676 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        .phone-mockup { width: 340px; height: 650px; border: 12px solid #0f172a; border-radius: 40px; overflow: hidden; position: relative; background: white; display: flex; flex-direction: column; }
-        .desktop-mockup { flex: 1; height: 650px; border-radius: 16px; background: white; box-shadow: 0 20px 50px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; display: flex; flex-direction: column; }
-        .tab-active-mobile { color: #2563eb !important; transform: scale(1.1); }
-        .pulse { animation: pulse-animation 2s infinite; }
-        @keyframes pulse-animation { 0% { box-shadow: 0 0 0 0px rgba(37, 99, 235, 0.6); } 100% { box-shadow: 0 0 0 20px rgba(37, 99, 235, 0); } }
-        .hidden { display: none; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .phone-mockup { 
+            width: 320px; 
+            height: 600px; 
+            border: 12px solid #1a1a1a; 
+            border-radius: 36px; 
+            overflow: hidden; 
+            position: relative; 
+            background: white;
+            transition: transform 0.3s ease;
+        }
+        .phone-mockup:hover {
+            transform: translateY(-5px);
+        }
+        .desktop-mockup { 
+            flex: 1; 
+            height: 600px; 
+            border-radius: 12px; 
+            background: white; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+        .desktop-mockup:hover {
+            transform: translateY(-5px);
+        }
+        .pulse { 
+            animation: pulse-animation 2s infinite; 
+        }
+        @keyframes pulse-animation { 
+            0% { box-shadow: 0 0 0 0px rgba(59, 130, 246, 0.7); } 
+            100% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); } 
+        }
+        @keyframes recording {
+            0%, 100% { transform: scale(1); background-color: rgb(239, 68, 68); }
+            50% { transform: scale(1.1); background-color: rgb(220, 38, 38); }
+        }
+        .recording {
+            animation: recording 1s infinite;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .slide-up {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+        @keyframes successPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .success-pulse {
+            animation: successPulse 0.6s ease-out;
+        }
+        .hidden-content {
+            display: none;
+        }
+        .bar-animate {
+            animation: barGrow 1s ease-out forwards;
+        }
+        @keyframes barGrow {
+            from { height: 0%; }
+        }
+        .tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+        .show-tooltip .tooltip {
+            opacity: 1;
+        }
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+        @keyframes speakRing {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.3); opacity: 0; }
+        }
+        .speaking-ring-1 {
+            animation: speakRing 1.5s infinite;
+        }
+        .speaking-ring-2 {
+            animation: speakRing 1.5s 0.5s infinite;
+        }
+        @keyframes avatarPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .avatar-speaking {
+            animation: avatarPulse 1s infinite;
+        }
+        @keyframes bgShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .bg-animate {
+            background-size: 200% 200%;
+            animation: bgShift 8s ease infinite;
+        }
     </style>
 </head>
-<body class="p-10">
+<body class="p-8">
 
-    <header class="mb-10 text-center">
-        <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight">Finnish Talk Studio 🇫🇮</h1>
-        <p class="text-slate-500 mt-2 text-lg italic">Interactive Learning Science Prototype</p>
+    <header class="mb-8 text-center">
+        <h1 class="text-4xl font-bold text-white drop-shadow-lg">Finnish Talk Studio 🇫🇮</h1>
+        <p class="text-white/90 mt-2">Interactive Learning Science-Based UX Mockup</p>
+        <p class="text-white/70 text-sm mt-1">👆 Click around to see how it works!</p>
     </header>
 
     <div class="flex flex-wrap justify-center gap-12">
         
+        <!-- MOBILE MOCKUP -->
         <div class="flex flex-col items-center">
-            <span class="mb-4 bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Mobile: Field Practice</span>
-            <div class="phone-mockup shadow-2xl">
-                <div class="h-8 flex justify-between px-8 items-center text-[10px] font-bold">
-                    <span>9:41</span>
-                    <div class="flex gap-1 items-center"><i class="fas fa-signal"></i> <i class="fas fa-wifi"></i> <i class="fas fa-battery-full"></i></div>
+            <span class="mb-4 font-bold text-white"><i class="fas fa-mobile-alt mr-2"></i>Mobile: Out-and-about</span>
+            <div class="phone-mockup shadow-2xl flex flex-col">
+                <div class="bg-gray-100 h-6 flex justify-between px-6 items-center text-[10px]">
+                    <span id="time">9:41</span>
+                    <div><i class="fas fa-signal"></i> <i class="fas fa-wifi"></i> <i class="fas fa-battery-full"></i></div>
                 </div>
                 
-                <div id="m-missions" class="p-6 flex-1 overflow-y-auto">
-                    <h3 class="font-bold text-slate-800 mb-4">Daily Missions</h3>
-                    <div class="space-y-3">
-                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 flex justify-between items-center">
-                            <span class="text-sm font-medium">🛒 Buy bread at shop</span>
-                            <button onclick="completeTask(this, 1)" class="bg-green-600 text-white text-[10px] px-3 py-1 rounded-full uppercase font-bold">Done</button>
+                <div class="p-5 flex-1 overflow-y-auto">
+                    <div class="bg-blue-50 p-4 rounded-2xl mb-4 border border-blue-100">
+                        <span class="text-xs font-bold text-blue-500 uppercase">Embodied Task</span>
+                        <h2 class="text-lg font-bold text-gray-800 mt-1">At the Supermarket 🛒</h2>
+                        <p class="text-sm text-gray-600">Find a staff member and ask where the milk is.</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="p-3 border rounded-xl bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer" id="sampleCard">
+                            <p class="text-xs text-gray-400">Sample sentence (Scaffolding):</p>
+                            <p class="text-md font-semibold text-gray-700">"Anteeksi, missä maito on?"</p>
+                            <button class="mt-2 text-blue-500 text-xs hover:text-blue-700 transition" id="playAudio">
+                                <i class="fas fa-volume-up"></i> Listen to sample
+                            </button>
                         </div>
-                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 flex justify-between items-center">
-                            <span class="text-sm font-medium">🚌 Ask for bus stop</span>
-                            <button onclick="completeTask(this, 1)" class="bg-green-600 text-white text-[10px] px-3 py-1 rounded-full uppercase font-bold">Done</button>
+
+                        <div class="flex flex-col items-center justify-center py-10">
+                            <div class="relative">
+                                <div id="micButton" class="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center text-white pulse cursor-pointer hover:bg-blue-600 transition-all">
+                                    <i class="fas fa-microphone text-3xl" id="micIcon"></i>
+                                </div>
+                                <span class="tooltip" id="micTooltip">Tap to start recording</span>
+                            </div>
+                            <p class="mt-4 text-sm font-medium text-gray-500 text-center px-4" id="micText">Hold to record your real answer</p>
                         </div>
-                        <div class="p-4 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-200">
-                            <p class="text-[10px] uppercase font-bold opacity-80">Active Scaffolding</p>
-                            <p class="text-sm font-bold mt-1 italic">"Missä on apteekki?"</p>
-                            <div onclick="simulateSpeech()" class="mt-4 w-12 h-12 bg-white rounded-full flex items-center justify-center text-blue-600 mx-auto cursor-pointer pulse">
-                                <i class="fas fa-microphone"></i>
+
+                        <!-- Hidden feedback section -->
+                        <div id="feedbackSection" class="hidden-content">
+                            <div class="bg-green-50 border border-green-200 rounded-xl p-4 fade-in">
+                                <div class="flex items-start gap-3">
+                                    <div class="bg-green-500 rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-check text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-green-800 text-sm">Great job! 🎉</h3>
+                                        <p class="text-xs text-green-700 mt-1">Your pronunciation was clear!</p>
+                                        <div class="mt-3 space-y-2">
+                                            <div class="flex justify-between text-xs">
+                                                <span class="text-gray-600">Fluency</span>
+                                                <span class="font-bold text-green-600">85%</span>
+                                            </div>
+                                            <div class="bg-gray-200 rounded-full h-2 overflow-hidden">
+                                                <div class="bg-green-500 h-full rounded-full" style="width: 85%"></div>
+                                            </div>
+                                        </div>
+                                        <button class="mt-3 bg-green-500 text-white text-xs px-4 py-2 rounded-lg hover:bg-green-600 transition" id="nextTaskBtn">
+                                            Next Task →
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div id="m-vocab" class="p-6 flex-1 overflow-y-auto hidden">
-                    <h3 class="font-bold text-slate-800 mb-4">Vocabulary Pool</h3>
-                    <div id="vocab-list" class="grid grid-cols-2 gap-2 mb-4">
-                        <div class="bg-slate-50 p-3 rounded-lg text-xs text-center border">kirjasto</div>
-                        <div class="bg-slate-50 p-3 rounded-lg text-xs text-center border">maito</div>
+                <div class="h-16 border-t flex justify-around items-center bg-gray-50">
+                    <div class="cursor-pointer hover:scale-110 transition relative" id="navMap">
+                        <i class="fas fa-map-marker-alt text-blue-600 text-xl"></i>
+                        <span class="tooltip">Tasks</span>
                     </div>
-                    <div class="flex gap-2">
-                        <input id="new-word-input" type="text" placeholder="Add word..." class="flex-1 text-xs p-2 border rounded-lg">
-                        <button onclick="addNewWord()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-bold">Add</button>
+                    <div class="cursor-pointer hover:scale-110 transition relative" id="navBook">
+                        <i class="fas fa-book text-gray-300 text-xl hover:text-blue-500"></i>
+                        <span class="tooltip">Lessons</span>
                     </div>
-                </div>
-
-                <div id="m-ai" class="p-6 flex-1 hidden">
-                    <h3 class="font-bold text-slate-800 mb-4">AI Speaking Partner</h3>
-                    <div class="bg-slate-100 p-4 rounded-2xl h-64 flex flex-col justify-end italic text-sm text-slate-500">
-                        <div class="bg-white p-3 rounded-xl mb-2 self-start rounded-bl-none text-slate-700 shadow-sm border">
-                            Moi! Miten voin auttaa? (Hi! How can I help?)
-                        </div>
-                        <p class="text-[10px] text-center mb-4 uppercase font-bold tracking-widest animate-pulse">AI Listening...</p>
+                    <div class="cursor-pointer hover:scale-110 transition relative" id="navChat">
+                        <i class="fas fa-comment-dots text-gray-300 text-xl hover:text-blue-500"></i>
+                        <span class="tooltip">Chat</span>
                     </div>
-                </div>
-
-                <div class="h-20 border-t flex justify-around items-center bg-white">
-                    <button onclick="showMobile('m-missions', this)" class="mobile-nav-btn tab-active-mobile"><i class="fas fa-map-marked-alt text-xl"></i></button>
-                    <button onclick="showMobile('m-vocab', this)" class="mobile-nav-btn text-slate-300"><i class="fas fa-book text-xl"></i></button>
-                    <button onclick="showMobile('m-ai', this)" class="mobile-nav-btn text-slate-300"><i class="fas fa-comment-dots text-xl"></i></button>
+                    <div class="cursor-pointer hover:scale-110 transition relative" id="navProfile">
+                        <i class="fas fa-user text-gray-300 text-xl hover:text-blue-500"></i>
+                        <span class="tooltip">Profile</span>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <!-- DESKTOP MOCKUP -->
         <div class="flex flex-col items-center flex-1 max-w-4xl">
-            <span class="mb-4 bg-indigo-100 text-indigo-700 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Desktop: Analytics & Reflection</span>
-            <div class="desktop-mockup">
-                <nav class="bg-slate-900 text-white px-8 py-4 flex justify-between items-center">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 bg-indigo-500 rounded flex items-center justify-center font-bold">FT</div>
-                        <span class="font-bold tracking-tight">Studio Dashboard</span>
-                    </div>
-                    <div class="flex gap-8 text-xs font-bold uppercase tracking-widest text-slate-400">
-                        <span class="text-white border-b-2 border-indigo-500 pb-1">Analytics</span>
-                        <span>Pronunciation</span>
-                        <span>History</span>
+            <span class="mb-4 font-bold text-white"><i class="fas fa-desktop mr-2"></i>Desktop: Reflection Studio</span>
+            <div class="desktop-mockup overflow-hidden flex flex-col border border-gray-200">
+                <nav class="bg-indigo-900 text-white p-4 flex justify-between items-center">
+                    <div class="font-bold">Finnish Talk <span class="text-indigo-300 text-sm">| Desktop Studio</span></div>
+                    <div class="flex gap-6 text-sm">
+                        <span class="border-b-2 border-white pb-1 cursor-pointer hover:text-indigo-200 transition" id="tabDashboard">Dashboard</span>
+                        <span class="text-indigo-300 cursor-pointer hover:text-white transition" id="tabPronunciation">Pronunciation (AI)</span>
+                        <span class="text-indigo-300 cursor-pointer hover:text-white transition" id="tabSRS">SRS History</span>
                     </div>
                 </nav>
 
-                <div class="p-8 grid grid-cols-12 gap-8 bg-slate-50 flex-1">
-                    <div class="col-span-7 space-y-6">
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Real-Life Speaking Minutes</h3>
-                            <div class="flex items-end gap-3 h-32">
-                                <div class="bg-slate-200 w-full h-[20%] rounded-t-lg"></div>
-                                <div class="bg-slate-200 w-full h-[40%] rounded-t-lg"></div>
-                                <div id="stat-bar" class="bg-indigo-600 w-full h-[15%] rounded-t-lg transition-all duration-500 shadow-lg shadow-indigo-100"></div>
-                                <div class="bg-slate-100 w-full h-[5%] rounded-t-lg"></div>
-                                <div class="bg-slate-100 w-full h-[5%] rounded-t-lg"></div>
+                <div class="p-6 grid grid-cols-12 gap-6 bg-gray-50 flex-1 overflow-y-auto">
+                    <!-- DASHBOARD TAB -->
+                    <div class="col-span-8 space-y-6" id="dashboardContent">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition-shadow">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4">Real-life Progress Score</h3>
+                            <div class="flex items-end gap-2 h-32" id="chartContainer">
+                                <div class="bg-indigo-400 w-1/7 rounded-t flex-1 cursor-pointer hover:bg-indigo-500 transition-colors" style="height: 40%;" data-value="40"></div>
+                                <div class="bg-indigo-400 w-1/7 rounded-t flex-1 cursor-pointer hover:bg-indigo-500 transition-colors" style="height: 60%;" data-value="60"></div>
+                                <div class="bg-indigo-400 w-1/7 rounded-t flex-1 cursor-pointer hover:bg-indigo-500 transition-colors" style="height: 30%;" data-value="30"></div>
+                                <div class="bg-indigo-400 w-1/7 rounded-t flex-1 cursor-pointer hover:bg-indigo-500 transition-colors" style="height: 85%;" data-value="85"></div>
+                                <div class="bg-indigo-600 w-1/7 rounded-t flex-1 cursor-pointer hover:bg-indigo-700 transition-colors relative" style="height: 95%;" data-value="95">
+                                    <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs font-bold text-indigo-600">Today</span>
+                                </div>
+                                <div class="bg-gray-200 w-1/7 rounded-t flex-1 cursor-pointer hover:bg-gray-300 transition-colors" style="height: 10%;" data-value="0"></div>
+                                <div class="bg-gray-200 w-1/7 rounded-t flex-1 cursor-pointer hover:bg-gray-300 transition-colors" style="height: 10%;" data-value="0"></div>
+                            </div>
+                            <div class="flex justify-between mt-2 text-[10px] text-gray-400 uppercase font-bold">
+                                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-6">
-                            <div class="bg-white p-5 rounded-2xl border border-slate-100">
-                                <p class="text-[10px] text-slate-400 uppercase font-bold mb-1">Phrases Mastered</p>
-                                <p id="mastered-count" class="text-4xl font-black text-slate-800">48</p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition-all cursor-pointer hover:scale-105" id="vocabCard">
+                                <p class="text-xs text-gray-500 uppercase font-bold">Vocabulary Used</p>
+                                <p class="text-3xl font-bold text-green-600" id="vocabCount">142</p>
+                                <p class="text-xs text-gray-400 mt-1">+8 today</p>
                             </div>
-                            <div class="bg-white p-5 rounded-2xl border border-slate-100">
-                                <p class="text-[10px] text-slate-400 uppercase font-bold mb-1">Words in Pool</p>
-                                <p id="vocab-count" class="text-4xl font-black text-slate-800">2</p>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition-all cursor-pointer hover:scale-105" id="confidenceCard">
+                                <p class="text-xs text-gray-500 uppercase font-bold">Average Confidence</p>
+                                <p class="text-3xl font-bold text-orange-500" id="confidenceScore">82%</p>
+                                <p class="text-xs text-gray-400 mt-1">↑ 5% this week</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-span-5">
-                        <div class="bg-white p-6 rounded-2xl border border-indigo-100 h-full">
-                            <h3 class="text-sm font-bold text-indigo-900 mb-5 uppercase tracking-wider"><i class="fas fa-brain mr-2"></i>Daily Reflection</h3>
-                            <textarea class="w-full text-sm p-4 border rounded-xl h-40 bg-slate-50 mb-4 focus:ring-2 focus:ring-indigo-300 outline-none" placeholder="What was your most successful interaction today?"></textarea>
-                            <button class="w-full bg-slate-900 text-white py-3 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-slate-800 transition shadow-lg">Sync Reflection</button>
+                    <!-- PRONUNCIATION AI TAB -->
+                    <div class="col-span-8 space-y-6 hidden-content" id="pronunciationContent">
+                        <div class="bg-gradient-to-br from-purple-50 to-blue-50 p-6 rounded-xl shadow-sm border border-purple-100">
+                            <div class="flex items-center justify-between mb-6">
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-800">AI Pronunciation Coach</h3>
+                                    <p class="text-sm text-gray-600">Practice with Aino, your Finnish tutor</p>
+                                </div>
+                                <div class="bg-white px-4 py-2 rounded-full shadow-sm">
+                                    <span class="text-xs font-bold text-purple-600">Level: Intermediate</span>
+                                </div>
+                            </div>
+
+                            <!-- Avatar Section -->
+                            <div class="bg-white rounded-2xl p-8 mb-6 flex flex-col items-center relative overflow-hidden">
+                                <!-- Background animation -->
+                                <div class="absolute inset-0 bg-gradient-to-br from-purple-100/50 to-blue-100/50" id="avatarBg"></div>
+                                
+                                <!-- Avatar -->
+                                <div class="relative z-10 mb-4">
+                                    <div class="w-32 h-32 rounded-full bg-gradient-to-br from-purple-400 to-blue-500 flex items-center justify-center shadow-lg relative" id="avatarCircle">
+                                        <div class="w-28 h-28 rounded-full bg-white flex items-center justify-center">
+                                            <i class="fas fa-user-graduate text-5xl text-purple-500" id="avatarIcon"></i>
+                                        </div>
+                                        <!-- Speaking rings -->
+                                        <div class="absolute inset-0 rounded-full border-4 border-purple-400 opacity-0" id="speakRing1"></div>
+                                        <div class="absolute inset-0 rounded-full border-4 border-blue-400 opacity-0" id="speakRing2"></div>
+                                    </div>
+                                </div>
+
+                                <!-- AI Speech Bubble -->
+                                <div class="relative z-10 bg-purple-100 rounded-2xl p-4 max-w-md text-center mb-4" id="aiSpeechBubble">
+                                    <p class="text-sm text-gray-700" id="aiMessage">Hello! Let's practice "Hyvää huomenta". Click the word to hear it.</p>
+                                </div>
+
+                                <!-- Practice Word -->
+                                <div class="relative z-10 bg-white border-2 border-purple-300 rounded-xl p-6 shadow-lg cursor-pointer hover:shadow-xl transition-all hover:scale-105" id="practiceWordCard">
+                                    <div class="text-center">
+                                        <p class="text-xs text-gray-500 uppercase font-bold mb-2">Practice Word</p>
+                                        <h2 class="text-3xl font-bold text-gray-800 mb-1" id="practiceWord">Hyvää huomenta</h2>
+                                        <p class="text-sm text-gray-600 mb-4">Good morning</p>
+                                        <button class="bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-600 transition" id="playPronunciation">
+                                            <i class="fas fa-volume-up mr-2"></i>Play Pronunciation
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Record Your Attempt -->
+                            <div class="bg-white rounded-xl p-6">
+                                <h4 class="font-bold text-gray-800 mb-4 text-center">Your Turn!</h4>
+                                <div class="flex flex-col items-center gap-4">
+                                    <button class="w-20 h-20 bg-gradient-to-br from-red-500 to-pink-500 rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-all hover:scale-110" id="recordPronunciation">
+                                        <i class="fas fa-microphone text-2xl"></i>
+                                    </button>
+                                    <p class="text-sm text-gray-600">Tap to record</p>
+                                </div>
+
+                                <!-- Pronunciation Feedback -->
+                                <div class="hidden-content mt-6" id="pronunciationFeedback">
+                                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4 fade-in">
+                                        <div class="flex items-start gap-3">
+                                            <div class="bg-green-500 rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">
+                                                <i class="fas fa-check text-white"></i>
+                                            </div>
+                                            <div class="flex-1">
+                                                <h3 class="font-bold text-green-800 text-sm mb-2">Excellent! 🎉</h3>
+                                                <div class="space-y-3">
+                                                    <div>
+                                                        <div class="flex justify-between text-xs mb-1">
+                                                            <span class="text-gray-600">Accuracy</span>
+                                                            <span class="font-bold text-green-600">94%</span>
+                                                        </div>
+                                                        <div class="bg-gray-200 rounded-full h-2">
+                                                            <div class="bg-green-500 h-full rounded-full" style="width: 94%"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="flex justify-between text-xs mb-1">
+                                                            <span class="text-gray-600">Intonation</span>
+                                                            <span class="font-bold text-green-600">88%</span>
+                                                        </div>
+                                                        <div class="bg-gray-200 rounded-full h-2">
+                                                            <div class="bg-green-500 h-full rounded-full" style="width: 88%"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="flex justify-between text-xs mb-1">
+                                                            <span class="text-gray-600">Fluency</span>
+                                                            <span class="font-bold text-yellow-600">76%</span>
+                                                        </div>
+                                                        <div class="bg-gray-200 rounded-full h-2">
+                                                            <div class="bg-yellow-500 h-full rounded-full" style="width: 76%"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-4 flex gap-2">
+                                                    <button class="flex-1 bg-purple-500 text-white text-xs px-4 py-2 rounded-lg hover:bg-purple-600 transition">
+                                                        Try Again
+                                                    </button>
+                                                    <button class="flex-1 bg-green-500 text-white text-xs px-4 py-2 rounded-lg hover:bg-green-600 transition">
+                                                        Next Word →
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SRS HISTORY TAB -->
+                    <div class="col-span-8 space-y-6 hidden-content" id="srsContent">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                            <div class="flex items-center justify-between mb-6">
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-800">Spaced Repetition System</h3>
+                                    <p class="text-sm text-gray-600">Track your vocabulary retention over time</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button class="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-lg text-sm font-medium hover:bg-indigo-200 transition">
+                                        All Words
+                                    </button>
+                                    <button class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-200 transition">
+                                        Due Today
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- SRS Stats -->
+                            <div class="grid grid-cols-4 gap-3 mb-6">
+                                <div class="bg-blue-50 p-3 rounded-lg text-center">
+                                    <p class="text-2xl font-bold text-blue-600">142</p>
+                                    <p class="text-xs text-gray-600">Total Words</p>
+                                </div>
+                                <div class="bg-green-50 p-3 rounded-lg text-center">
+                                    <p class="text-2xl font-bold text-green-600">89</p>
+                                    <p class="text-xs text-gray-600">Mastered</p>
+                                </div>
+                                <div class="bg-yellow-50 p-3 rounded-lg text-center">
+                                    <p class="text-2xl font-bold text-yellow-600">38</p>
+                                    <p class="text-xs text-gray-600">Learning</p>
+                                </div>
+                                <div class="bg-orange-50 p-3 rounded-lg text-center">
+                                    <p class="text-2xl font-bold text-orange-600">12</p>
+                                    <p class="text-xs text-gray-600">Due Today</p>
+                                </div>
+                            </div>
+
+                            <!-- Word List -->
+                            <div class="space-y-2">
+                                <!-- Word Item 1 -->
+                                <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-all cursor-pointer hover:shadow-md" onclick="toggleWordDetails(this)">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-1">
+                                            <div class="flex items-center gap-3">
+                                                <h4 class="font-bold text-gray-800">Maito</h4>
+                                                <span class="text-sm text-gray-500">• Milk</span>
+                                            </div>
+                                            <div class="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                                                <span><i class="fas fa-calendar-alt mr-1"></i>Added: Jan 15</span>
+                                                <span><i class="fas fa-sync-alt mr-1"></i>Next: Feb 10</span>
+                                                <span><i class="fas fa-fire mr-1 text-orange-500"></i>Streak: 8 days</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <div class="text-center">
+                                                <div class="text-2xl font-bold text-green-600">98%</div>
+                                                <div class="text-xs text-gray-500">Retention</div>
+                                            </div>
+                                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">Mastered</span>
+                                        </div>
+                                    </div>
+                                    <div class="hidden-details mt-4 pt-4 border-t border-gray-200" style="display: none;">
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <p class="text-xs text-gray-500 mb-2">Review History:</p>
+                                                <div class="flex gap-1">
+                                                    <div class="w-8 h-8 bg-green-500 rounded" title="Correct"></div>
+                                                    <div class="w-8 h-8 bg-green-500 rounded" title="Correct"></div>
+                                                    <div class="w-8 h-8 bg-green-500 rounded" title="Correct"></div>
+                                                    <div class="w-8 h-8 bg-yellow-500 rounded" title="Partial"></div>
+                                                    <div class="w-8 h-8 bg-green-500 rounded" title="Correct"></div>
+                                                </div>
+                                            </div>
+                                            <div class="text-right">
+                                                <button class="bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-600 transition">
+                                                    Practice Now
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Word Item 2 -->
+                                <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-all cursor-pointer hover:shadow-md" onclick="toggleWordDetails(this)">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-1">
+                                            <div class="flex items-center gap-3">
+                                                <h4 class="font-bold text-gray-800">Kiitos</h4>
+                                                <span class="text-sm text-gray-500">• Thank you</span>
+                                            </div>
+                                            <div class="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                                                <span><i class="fas fa-calendar-alt mr-1"></i>Added: Jan 12</span>
+                                                <span><i class="fas fa-sync-alt mr-1"></i>Next: Feb 8</span>
+                                                <span><i class="fas fa-fire mr-1 text-orange-500"></i>Streak: 12 days</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <div class="text-center">
+                                                <div class="text-2xl font-bold text-green-600">95%</div>
+                                                <div class="text-xs text-gray-500">Retention</div>
+                                            </div>
+                                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">Mastered</span>
+                                        </div>
+                                    </div>
+                                    <div class="hidden-details mt-4 pt-4 border-t border-gray-200" style="display: none;">
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <p class="text-xs text-gray-500 mb-2">Review History:</p>
+                                                <div class="flex gap-1">
+                                                    <div class="w-8 h-8 bg-green-500 rounded" title="Correct"></div>
+                                                    <div class="w-8 h-8 bg-green-500 rounded" title="Correct"></div>
+                                                    <div class="w-8 h-8 bg-green-500 rounded" title="Correct"></div>
+                                                    <div class="w-8 h-8 bg-green-500 rounded" title="Correct"></div>
+                                                    <div class="w-8 h-8 bg-green-500 rounded" title="Correct"></div>
+                                                </div>
+                                            </div>
+                                            <div class="text-right">
+                                                <button class="bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-600 transition">
+                                                    Practice Now
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Word Item 3 -->
+                                <div class="border border-orange-200 rounded-lg p-4 hover:bg-orange-50 transition-all cursor-pointer hover:shadow-md" onclick="toggleWordDetails(this)">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-1">
+                                            <div class="flex items-center gap-3">
+                                                <h4 class="font-bold text-gray-800">Apteekki</h4>
+                                                <span class="text-sm text-gray-500">• Pharmacy</span>
+                                            </div>
+                                            <div class="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                                                <span><i class="fas fa-calendar-alt mr-1"></i>Added: Feb 5</span>
+                                                <span><i class="fas fa-sync-alt mr-1 text-orange-500"></i>Next: Today!</span>
+                                                <span><i class="fas fa-fire mr-1 text-orange-500"></i>Streak: 2 days</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <div class="text-center">
+                                                <div class="text-2xl font-bold text-yellow-600">72%</div>
+                                                <div class="text-xs text-gray-500">Retention</div>
+                                            </div>
+                                            <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-bold">Learning</span>
+                                        </div>
+                                    </div>
+                                    <div class="hidden-details mt-4 pt-4 border-t border-gray-200" style="display: none;">
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <p class="text-xs text-gray-500 mb-2">Review History:</p>
+                                                <div class="flex gap-1">
+                                                    <div class="w-8 h-8 bg-green-500 rounded" title="Correct"></div>
+                                                    <div class="w-8 h-8 bg-red-500 rounded" title="Incorrect"></div>
+                                                    <div class="w-8 h-8 bg-yellow-500 rounded" title="Partial"></div>
+                                                    <div class="w-8 h-8 bg-green-500 rounded" title="Correct"></div>
+                                                </div>
+                                            </div>
+                                            <div class="text-right">
+                                                <button class="bg-orange-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-orange-600 transition pulse">
+                                                    Review Now!
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Word Item 4 -->
+                                <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-all cursor-pointer hover:shadow-md" onclick="toggleWordDetails(this)">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-1">
+                                            <div class="flex items-center gap-3">
+                                                <h4 class="font-bold text-gray-800">Hyvää huomenta</h4>
+                                                <span class="text-sm text-gray-500">• Good morning</span>
+                                            </div>
+                                            <div class="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                                                <span><i class="fas fa-calendar-alt mr-1"></i>Added: Jan 8</span>
+                                                <span><i class="fas fa-sync-alt mr-1"></i>Next: Feb 12</span>
+                                                <span><i class="fas fa-fire mr-1 text-orange-500"></i>Streak: 15 days</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <div class="text-center">
+                                                <div class="text-2xl font-bold text-green-600">91%</div>
+                                                <div class="text-xs text-gray-500">Retention</div>
+                                            </div>
+                                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">Mastered</span>
+                                        </div>
+                                    </div>
+                                    <div class="hidden-details mt-4 pt-4 border-t border-gray-200" style="display: none;">
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <p class="text-xs text-gray-500 mb-2">Review History:</p>
+                                                <div class="flex gap-1">
+                                                    <div class="w-8 h-8 bg-green-500 rounded" title="Correct"></div>
+                                                    <div class="w-8 h-8 bg-green-500 rounded" title="Correct"></div>
+                                                    <div class="w-8 h-8 bg-yellow-500 rounded" title="Partial"></div>
+                                                    <div class="w-8 h-8 bg-green-500 rounded" title="Correct"></div>
+                                                    <div class="w-8 h-8 bg-green-500 rounded" title="Correct"></div>
+                                                </div>
+                                            </div>
+                                            <div class="text-right">
+                                                <button class="bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-600 transition">
+                                                    Practice Now
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Word Item 5 -->
+                                <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-all cursor-pointer hover:shadow-md" onclick="toggleWordDetails(this)">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-1">
+                                            <div class="flex items-center gap-3">
+                                                <h4 class="font-bold text-gray-800">Anteeksi</h4>
+                                                <span class="text-sm text-gray-500">• Excuse me / Sorry</span>
+                                            </div>
+                                            <div class="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                                                <span><i class="fas fa-calendar-alt mr-1"></i>Added: Jan 20</span>
+                                                <span><i class="fas fa-sync-alt mr-1"></i>Next: Feb 11</span>
+                                                <span><i class="fas fa-fire mr-1 text-orange-500"></i>Streak: 6 days</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <div class="text-center">
+                                                <div class="text-2xl font-bold text-yellow-600">84%</div>
+                                                <div class="text-xs text-gray-500">Retention</div>
+                                            </div>
+                                            <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-bold">Learning</span>
+                                        </div>
+                                    </div>
+                                    <div class="hidden-details mt-4 pt-4 border-t border-gray-200" style="display: none;">
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <p class="text-xs text-gray-500 mb-2">Review History:</p>
+                                                <div class="flex gap-1">
+                                                    <div class="w-8 h-8 bg-green-500 rounded" title="Correct"></div>
+                                                    <div class="w-8 h-8 bg-green-500 rounded" title="Correct"></div>
+                                                    <div class="w-8 h-8 bg-yellow-500 rounded" title="Partial"></div>
+                                                    <div class="w-8 h-8 bg-yellow-500 rounded" title="Partial"></div>
+                                                    <div class="w-8 h-8 bg-green-500 rounded" title="Correct"></div>
+                                                </div>
+                                            </div>
+                                            <div class="text-right">
+                                                <button class="bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-600 transition">
+                                                    Practice Now
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-span-4 bg-white p-5 rounded-xl shadow-sm border border-indigo-100">
+                        <h3 class="text-md font-bold text-indigo-900 mb-3"><i class="fas fa-pen-fancy mr-2"></i>Daily Reflection</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-xs text-gray-600 block mb-1 font-medium">When did you feel most confident today?</label>
+                                <textarea 
+                                    class="w-full text-sm p-3 border rounded-lg h-24 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all" 
+                                    placeholder="Today I dared to ask the supermarket staff..."
+                                    id="reflectionText1"
+                                ></textarea>
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-600 block mb-1 font-medium">Which words gave you difficulty?</label>
+                                <input 
+                                    type="text" 
+                                    class="w-full text-sm p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all" 
+                                    placeholder="E.g.: Tarjous, Apteekki..."
+                                    id="reflectionText2"
+                                >
+                            </div>
+                            <button class="w-full bg-indigo-600 text-white py-2 rounded-lg font-bold text-sm hover:bg-indigo-700 transition-all hover:shadow-lg active:scale-95" id="saveReflection">
+                                <span id="saveButtonText">Save & Analyze</span>
+                            </button>
+                        </div>
+
+                        <!-- Success message -->
+                        <div id="saveSuccess" class="hidden-content mt-4">
+                            <div class="bg-green-50 border border-green-200 rounded-lg p-3 fade-in">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-check-circle text-green-500"></i>
+                                    <span class="text-sm text-green-700 font-medium">Reflection saved!</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -138,62 +686,288 @@
     </div>
 
     <script>
-        // Tab Navigation
-        function showMobile(screenId, btn) {
-            ['m-missions', 'm-vocab', 'm-ai'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
+        // Mobile interactions
+        let isRecording = false;
+        const micButton = document.getElementById('micButton');
+        const micIcon = document.getElementById('micIcon');
+        const micText = document.getElementById('micText');
+        const feedbackSection = document.getElementById('feedbackSection');
+        const playAudioBtn = document.getElementById('playAudio');
+        const sampleCard = document.getElementById('sampleCard');
+
+        // Play audio sample
+        playAudioBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const icon = this.querySelector('i');
+            icon.classList.remove('fa-volume-up');
+            icon.classList.add('fa-spinner', 'fa-spin');
+            this.classList.add('shimmer');
+            
+            setTimeout(() => {
+                icon.classList.remove('fa-spinner', 'fa-spin');
+                icon.classList.add('fa-volume-up');
+                this.classList.remove('shimmer');
+            }, 1500);
+        });
+
+        sampleCard.addEventListener('click', function() {
+            this.classList.add('success-pulse');
+            setTimeout(() => this.classList.remove('success-pulse'), 600);
+        });
+
+        // Recording interaction
+        micButton.addEventListener('click', function() {
+            if (!isRecording) {
+                // Start recording
+                isRecording = true;
+                micButton.classList.remove('pulse', 'bg-blue-500', 'hover:bg-blue-600');
+                micButton.classList.add('recording', 'bg-red-500');
+                micIcon.classList.remove('fa-microphone');
+                micIcon.classList.add('fa-stop');
+                micText.textContent = 'Recording... Click to stop';
+                micText.classList.add('text-red-500', 'font-bold');
+            } else {
+                // Stop recording
+                isRecording = false;
+                micButton.classList.remove('recording', 'bg-red-500');
+                micButton.classList.add('bg-green-500');
+                micIcon.classList.remove('fa-stop');
+                micIcon.classList.add('fa-check');
+                micText.textContent = 'Processing...';
+                micText.classList.remove('text-red-500');
+                micText.classList.add('text-green-500');
+                
+                // Show feedback after delay
+                setTimeout(() => {
+                    feedbackSection.classList.remove('hidden-content');
+                    micButton.style.display = 'none';
+                    micText.style.display = 'none';
+                }, 1500);
+            }
+        });
+
+        // Next task button
+        document.getElementById('nextTaskBtn')?.addEventListener('click', function() {
+            this.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Loading...';
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        });
+
+        // Desktop interactions
+        const saveReflectionBtn = document.getElementById('saveReflection');
+        const saveSuccess = document.getElementById('saveSuccess');
+        const saveButtonText = document.getElementById('saveButtonText');
+
+        saveReflectionBtn.addEventListener('click', function() {
+            saveButtonText.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
+            this.disabled = true;
+            
+            setTimeout(() => {
+                saveButtonText.textContent = 'Saved!';
+                saveSuccess.classList.remove('hidden-content');
+                
+                setTimeout(() => {
+                    saveButtonText.textContent = 'Save & Analyze';
+                    this.disabled = false;
+                }, 2000);
+            }, 1000);
+        });
+
+        // Chart bar interactions
+        const chartBars = document.querySelectorAll('#chartContainer > div');
+        chartBars.forEach((bar, index) => {
+            bar.addEventListener('click', function() {
+                const value = this.getAttribute('data-value');
+                const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                alert(`${days[index]}: ${value}% completion`);
             });
-            document.querySelectorAll('.mobile-nav-btn').forEach(b => {
-                b.classList.remove('tab-active-mobile');
-                b.classList.add('text-slate-300');
+        });
+
+        // Stat cards interaction
+        document.getElementById('vocabCard').addEventListener('click', function() {
+            this.classList.add('success-pulse');
+            const count = document.getElementById('vocabCount');
+            let currentCount = parseInt(count.textContent);
+            count.textContent = currentCount + 1;
+            
+            setTimeout(() => {
+                count.textContent = currentCount;
+                this.classList.remove('success-pulse');
+            }, 1000);
+        });
+
+        document.getElementById('confidenceCard').addEventListener('click', function() {
+            this.classList.add('success-pulse');
+            const score = document.getElementById('confidenceScore');
+            score.textContent = '83%';
+            
+            setTimeout(() => {
+                score.textContent = '82%';
+                this.classList.remove('success-pulse');
+            }, 1000);
+        });
+
+        // Tab switching
+        const tabs = [
+            document.getElementById('tabDashboard'),
+            document.getElementById('tabPronunciation'),
+            document.getElementById('tabSRS')
+        ];
+
+        const tabContents = {
+            'tabDashboard': document.getElementById('dashboardContent'),
+            'tabPronunciation': document.getElementById('pronunciationContent'),
+            'tabSRS': document.getElementById('srsContent')
+        };
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Update tab styles
+                tabs.forEach(t => {
+                    t.classList.remove('border-b-2', 'border-white', 'pb-1');
+                    t.classList.add('text-indigo-300');
+                });
+                this.classList.add('border-b-2', 'border-white', 'pb-1');
+                this.classList.remove('text-indigo-300');
+
+                // Show corresponding content
+                Object.keys(tabContents).forEach(key => {
+                    if (key === this.id) {
+                        tabContents[key].classList.remove('hidden-content');
+                        tabContents[key].classList.add('fade-in');
+                    } else {
+                        tabContents[key].classList.add('hidden-content');
+                        tabContents[key].classList.remove('fade-in');
+                    }
+                });
             });
-            document.getElementById(screenId).classList.remove('hidden');
-            btn.classList.add('tab-active-mobile');
-            btn.classList.remove('text-slate-300');
+        });
+
+        // Pronunciation AI interactions
+        const playPronunciationBtn = document.getElementById('playPronunciation');
+        const avatarCircle = document.getElementById('avatarCircle');
+        const speakRing1 = document.getElementById('speakRing1');
+        const speakRing2 = document.getElementById('speakRing2');
+        const aiMessage = document.getElementById('aiMessage');
+        const avatarBg = document.getElementById('avatarBg');
+
+        if (playPronunciationBtn) {
+            playPronunciationBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // Animate avatar speaking
+                avatarCircle.classList.add('avatar-speaking');
+                speakRing1.classList.add('speaking-ring-1');
+                speakRing2.classList.add('speaking-ring-2');
+                avatarBg.classList.add('bg-animate');
+                
+                // Change button state
+                this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Playing...';
+                this.disabled = true;
+                
+                // Update AI message
+                aiMessage.textContent = '🗣️ Listen carefully to the pronunciation...';
+                
+                setTimeout(() => {
+                    avatarCircle.classList.remove('avatar-speaking');
+                    speakRing1.classList.remove('speaking-ring-1');
+                    speakRing2.classList.remove('speaking-ring-2');
+                    this.innerHTML = '<i class="fas fa-volume-up mr-2"></i>Play Pronunciation';
+                    this.disabled = false;
+                    aiMessage.textContent = 'Great! Now try saying it yourself. Click the microphone below.';
+                }, 3000);
+            });
         }
 
-        // Mission Interaction
-        function completeTask(btn, value) {
-            btn.innerText = "DONE ✔";
-            btn.disabled = true;
-            btn.className = "bg-slate-300 text-white text-[10px] px-3 py-1 rounded-full uppercase font-bold cursor-not-allowed";
-            
-            // Update Desktop Stats
-            const count = document.getElementById('mastered-count');
-            count.innerText = parseInt(count.innerText) + 1;
-            
-            // Animate bar
-            const bar = document.getElementById('stat-bar');
-            let currentHeight = parseInt(bar.style.height) || 15;
-            bar.style.height = (currentHeight + 10) + "%";
+        // Record pronunciation
+        const recordPronunciationBtn = document.getElementById('recordPronunciation');
+        const pronunciationFeedback = document.getElementById('pronunciationFeedback');
+        let isRecordingPronunciation = false;
+
+        if (recordPronunciationBtn) {
+            recordPronunciationBtn.addEventListener('click', function() {
+                if (!isRecordingPronunciation) {
+                    // Start recording
+                    isRecordingPronunciation = true;
+                    this.classList.remove('from-red-500', 'to-pink-500');
+                    this.classList.add('from-red-600', 'to-red-700', 'recording');
+                    this.innerHTML = '<i class="fas fa-stop text-2xl"></i>';
+                    aiMessage.textContent = '🎤 Recording... Take your time!';
+                } else {
+                    // Stop recording
+                    isRecordingPronunciation = false;
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin text-2xl"></i>';
+                    aiMessage.textContent = '🤔 Analyzing your pronunciation...';
+                    
+                    setTimeout(() => {
+                        pronunciationFeedback.classList.remove('hidden-content');
+                        this.classList.remove('recording', 'from-red-600', 'to-red-700');
+                        this.classList.add('from-green-500', 'to-green-600');
+                        this.innerHTML = '<i class="fas fa-check text-2xl"></i>';
+                        aiMessage.textContent = '🎉 Excellent work! Ready for the next word?';
+                    }, 2000);
+                }
+            });
         }
 
-        // Vocabulary Interaction
-        function addNewWord() {
-            const input = document.getElementById('new-word-input');
-            const val = input.value.trim();
-            if(!val) return;
-
-            const list = document.getElementById('vocab-list');
-            const item = document.createElement('div');
-            item.className = "bg-blue-50 p-3 rounded-lg text-xs text-center border border-blue-100 text-blue-700 font-bold animate-bounce";
-            item.innerText = val;
-            list.appendChild(item);
-
-            // Update Desktop Count
-            const vCount = document.getElementById('vocab-count');
-            vCount.innerText = parseInt(vCount.innerText) + 1;
-            
-            input.value = "";
-            setTimeout(() => item.classList.remove('animate-bounce'), 1000);
+        // SRS word toggle details
+        function toggleWordDetails(element) {
+            const details = element.querySelector('.hidden-details');
+            if (details.style.display === 'none' || details.style.display === '') {
+                details.style.display = 'block';
+                details.classList.add('fade-in');
+            } else {
+                details.style.display = 'none';
+                details.classList.remove('fade-in');
+            }
         }
 
-        // AI Simulation
-        function simulateSpeech() {
-            alert("AI Voice Recognition: Processing 'Missä on apteekki?'... Accuracy: 94%. Mission recorded!");
-            const bar = document.getElementById('stat-bar');
-            bar.style.height = "85%";
+        // Make function global
+        window.toggleWordDetails = toggleWordDetails;
+
+        // Navigation tooltips
+        const navItems = [
+            document.getElementById('navMap'),
+            document.getElementById('navBook'),
+            document.getElementById('navChat'),
+            document.getElementById('navProfile')
+        ];
+
+        navItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.classList.add('show-tooltip');
+            });
+            item.addEventListener('mouseleave', function() {
+                this.classList.remove('show-tooltip');
+            });
+        });
+
+        // Update time
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('time').textContent = `${hours}:${minutes}`;
         }
+        updateTime();
+        setInterval(updateTime, 60000);
+
+        // Input animations
+        const inputs = [
+            document.getElementById('reflectionText1'),
+            document.getElementById('reflectionText2')
+        ];
+
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('slide-up');
+            });
+            input.addEventListener('blur', function() {
+                this.parentElement.classList.remove('slide-up');
+            });
+        });
     </script>
+
 </body>
 </html>
